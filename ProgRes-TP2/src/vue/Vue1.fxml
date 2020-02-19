@@ -21,7 +21,7 @@
       <Button fx:id="btnEnvoyerFichierV1" layoutX="501.0" layoutY="427.0" mnemonicParsing="false" onAction="#btnEnvoyerFichierV1Clicked" text="Envoyer Fichier" />
       <Button fx:id="btnQuitterV1" layoutX="664.0" layoutY="459.0" mnemonicParsing="false" onAction="#btnQuitterV1Clicked" prefHeight="25.0" prefWidth="77.0" text="Quitter" />
       <ListView fx:id="listChatV1" layoutX="44.0" layoutY="116.0" prefHeight="200.0" prefWidth="266.0" />
-      <ListView fx:id="listStateV1" layoutX="336.0" layoutY="116.0" prefHeight="200.0" prefWidth="266.0" />
+      <ListView fx:id="listEventV1" layoutX="336.0" layoutY="116.0" prefHeight="200.0" prefWidth="266.0" />
       <Button fx:id="btnConnectV1" layoutX="661.0" layoutY="30.0" mnemonicParsing="false" onAction="#btnConnectV1Clicked" text="Connection" />
    </children>
 </AnchorPane>
