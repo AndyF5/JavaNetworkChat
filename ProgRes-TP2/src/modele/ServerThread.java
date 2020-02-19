@@ -42,6 +42,8 @@ public class ServerThread implements Runnable {
             ServerSocket server = new ServerSocket(port);
             
             while(continuer) {
+                System.out.println("Server ecoute sur socket " + server);
+                
                 Socket socket = server.accept();
                 
                 ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -57,9 +59,9 @@ public class ServerThread implements Runnable {
                 });
             }
         } catch (IOException ex) {
-            Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
     

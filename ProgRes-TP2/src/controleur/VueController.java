@@ -11,15 +11,21 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import modele.Message;
+import modele.ServerThread;
 
 /**
  * FXML Controller class
@@ -62,23 +68,9 @@ public class VueController implements Initializable {
         // Mettre le btnConnect par défaut
         btnConnectV1.setDefaultButton(true);
         
-        Socket ServerConnection=null;
-        int Port = 55555;
-        try {
-            ServerSocket serverSocket = new ServerSocket(Port);
-            ServerConnection=serverSocket.accept();
-            InputStream inV1=this.ServerConnection.getInputStream();
-            ObjectInputStream objV1= new ObjectInputStream(inV1);
-            
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555));
         
-        
-        
-        
+        server.start();
     }
 
     @FXML
