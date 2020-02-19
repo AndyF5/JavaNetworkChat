@@ -50,6 +50,8 @@ public class ServerThread implements Runnable {
                 
                 Message message = (Message)obj;
                 
+                System.out.println("Message received : " + message.getMessage());
+                
                 Platform.runLater(() -> {
                     conversation.add(message);
                 });

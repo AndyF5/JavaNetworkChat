@@ -102,5 +102,8 @@ public class VueController implements Initializable {
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }
-  
+    
+    private void testSend(){
+        
+    }
 }
