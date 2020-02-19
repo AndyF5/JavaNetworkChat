@@ -16,10 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -29,7 +26,7 @@ import javafx.scene.control.TextField;
  *
  * @author hamdi
  */
-public class Vue1Controller implements Initializable {
+public class VueController implements Initializable {
 
     @FXML
     private TextField txtIpDistntV1;
@@ -50,11 +47,11 @@ public class Vue1Controller implements Initializable {
     @FXML
     private ListView<?> listChatV1;
     @FXML
-    private ListView<Object> listStateV1 = new ListView<Object>();
-    @FXML
     private Button btnConnectV1;
 
     Socket ServerConnection=null;
+    @FXML
+    private ListView<?> listEventV1;
     /**
      * Initializes the controller class.
      * @param url
@@ -76,7 +73,7 @@ public class Vue1Controller implements Initializable {
             
             
         } catch (IOException ex) {
-            Logger.getLogger(Vue1Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -98,12 +95,12 @@ public class Vue1Controller implements Initializable {
     
     @FXML
     private void btnQuitterV1Clicked(ActionEvent event) {
-        try {
-            ServerConnection.close();
+      //  try {
+     //       ServerConnection.close();
             System.exit(0);
-        } catch (IOException ex) {
-            Logger.getLogger(Vue1Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    /*   } catch (IOException ex) {
+            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
   
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="753.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.Vue1Controller">
+<AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="753.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.VueController">
    <children>
       <Label layoutX="48.0" layoutY="34.0" text="IP distant :" />
       <Label layoutX="48.0" layoutY="76.0" text="Nom d'utilisateur :" />
