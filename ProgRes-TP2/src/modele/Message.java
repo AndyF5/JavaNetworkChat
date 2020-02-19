@@ -5,11 +5,13 @@
  */
 package modele;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 1897483
  */
-public class Message {
+public class Message implements Serializable{
 
     private final String message;
     private final String user;

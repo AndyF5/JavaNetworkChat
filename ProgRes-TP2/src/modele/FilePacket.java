@@ -6,15 +6,16 @@
 package modele;
 
 import java.io.File;
+import java.io.Serializable;
 
 /** Object qui respresent un fichier envoyé par réseau.
  *  Ça utilise un proprieté «type» pour identifier l'objet comme un fichier quand reçu par l'application.
  * 
  * @author 1897654
  */
-public class FilePacket {
-    private String type;
-    private File file;
+public class FilePacket implements Serializable{
+    private final String type;
+    private final File file;
 
     public FilePacket(File file) {
         this.type = "File";
