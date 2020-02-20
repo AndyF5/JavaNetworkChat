@@ -6,6 +6,7 @@
 package modele;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -21,6 +22,8 @@ import javafx.collections.ObservableList;
  * @author 1897483
  */
 public class ServerThread implements Runnable {
+    private final String FILEPATH = "/TEMP";
+    
     private Collection<Message> conversation;
     private Collection<String> events;
     
@@ -48,15 +51,26 @@ public class ServerThread implements Runnable {
                 
                 ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
                 
-                Object obj = (Object) input.readObject();
+                Object obj = input.readObject();
                 
-                Message message = (Message)obj;
+                if (obj instanceof Message){
+                    Message message = (Message)obj;
                 
-                System.out.println("Message received : " + message.getMessage());
+                    System.out.println("Message received : " + message.getMessage());
+
+                    Platform.runLater(() -> {
+                        conversation.add(message);
+                    });
+                }
+                else if (obj instanceof File){
+                    
+                }
+                /*
+                System.out.println("Is Message? " + (obj instanceof Message));
                 
-                Platform.runLater(() -> {
-                    conversation.add(message);
-                });
+                System.out.println("Is Message? " + (obj instanceof FilePacket));
+                */
+                
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
