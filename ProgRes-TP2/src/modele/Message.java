@@ -29,7 +29,7 @@ public class Message implements Serializable{
         return type;
     }
 
-    public Message(String message, String user) {
+    public Message(String user , String message) {
         this.message = message;
         this.user = user;
         this.type = "Message";
