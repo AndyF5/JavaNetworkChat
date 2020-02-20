@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="AnchorPane" prefHeight="506.0" prefWidth="753.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controleur.VueController">
    <children>
       <Label fx:id="alert" layoutX="412.0" layoutY="76.0" prefHeight="17.0" prefWidth="326.0" textFill="#eb0707" />
       <Label layoutX="48.0" layoutY="76.0" text="Nom d'utilisateur :" />
-      <TextField fx:id="txtIpDistntV1" layoutX="158.0" layoutY="30.0" />
+      <TextField fx:id="txtIpDistntV1" layoutX="158.0" layoutY="30.0"/>
       <TextField fx:id="txtNomUtilisateurV1" layoutX="158.0" layoutY="72.0" />
       <TextField fx:id="txtPortV1" layoutX="412.0" layoutY="30.0" />
       <Label layoutX="336.0" layoutY="34.0" text="Port Distant :" />
@@ -23,5 +24,7 @@
       <ListView fx:id="listChatV1" layoutX="44.0" layoutY="116.0" prefHeight="200.0" prefWidth="266.0" />
       <ListView fx:id="listEventV1" layoutX="336.0" layoutY="116.0" prefHeight="200.0" prefWidth="266.0" />
       <Button fx:id="btnConnectV1" layoutX="661.0" layoutY="30.0" mnemonicParsing="false" onAction="#btnConnectV1Clicked" text="Connection" />
+      <Label layoutX="48.0" layoutY="34.0" />
+      <Label layoutX="48.0" layoutY="34.0" text="IP distant :" />
    </children>
 </AnchorPane>

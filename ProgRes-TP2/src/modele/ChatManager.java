@@ -21,6 +21,7 @@ public class ChatManager {
     private final Collection<Message> chat;
     private final Collection<String> events;
     private final String FILESAVEPATH = "C:/TEMP/Destination";
+    Thread server;
 
     public ChatManager(Collection<Message> chat, Collection<String> events) {
         this.chat = chat;
@@ -43,11 +44,12 @@ public class ChatManager {
     }
 
     public void startServer() {
-        Thread server = new Thread(new ServerThread(chat, events, 5555, FILESAVEPATH));
+        server = new Thread(new ServerThread(chat, events, 5555, FILESAVEPATH));
         server.start();
     }
     public void close() throws IOException{
       con.close();
+      server.interrupt();
     }
 
 }
