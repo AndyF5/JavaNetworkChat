@@ -17,6 +17,7 @@ import java.util.Collection;
 public class ChatManager {
 
     private Socket socket;
+    private Connection con;
     private final Collection<Message> chat;
     private final Collection<String> events;
     private final String FILESAVEPATH = "C:/TEMP/Destination";
@@ -27,7 +28,7 @@ public class ChatManager {
     }
 
     public void connect(String ipDistant, int portDistant) throws IOException {
-        Connection con = new Connection(ipDistant, portDistant);
+        con = new Connection(ipDistant, portDistant);
         socket = con.getSenderSocket();
     }
 
@@ -45,8 +46,8 @@ public class ChatManager {
         Thread server = new Thread(new ServerThread(chat, events, 5555, FILESAVEPATH));
         server.start();
     }
-    public void close(){
-      //
+    public void close() throws IOException{
+      con.close();
     }
 
 }

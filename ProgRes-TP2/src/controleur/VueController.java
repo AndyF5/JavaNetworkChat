@@ -103,7 +103,7 @@ public class VueController implements Initializable {
     @FXML
     private void btnEnvoyerFichierV1Clicked(ActionEvent event) {
         if (file != null) {
-            chatManager.sendFile(file); //******************************
+            chatManager.sendFile(file); 
         }
     }
 
