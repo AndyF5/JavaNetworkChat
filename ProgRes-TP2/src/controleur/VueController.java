@@ -130,7 +130,7 @@ public class VueController implements Initializable {
     }
 
     @FXML
-    private void btnQuitterV1Clicked(ActionEvent event) {
+    private void btnQuitterV1Clicked(ActionEvent event) throws IOException {
         chatManager.close();
         System.exit(0);
     }
