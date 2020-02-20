@@ -33,7 +33,8 @@ import modele.ServerThread;
  * @author hamdi
  */
 public class VueController implements Initializable {
-
+    private final String FILESAVEPATH = "/TEMP";
+    
     @FXML
     private TextField txtIpDistntV1;
     @FXML
@@ -65,12 +66,8 @@ public class VueController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Mettre le btnConnect par défaut
-        btnConnectV1.setDefaultButton(true);
         
-        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555));
         
-        server.start();
     }
 
     @FXML
@@ -83,6 +80,11 @@ public class VueController implements Initializable {
 
     @FXML
     private void btnConnectV1Clicked(ActionEvent event) {
+        btnConnectV1.setDefaultButton(true);
+        
+        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555, FILESAVEPATH));
+        
+        server.start();
     }
     
     @FXML

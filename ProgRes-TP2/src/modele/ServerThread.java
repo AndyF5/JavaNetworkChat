@@ -22,7 +22,7 @@ import javafx.collections.ObservableList;
  * @author 1897483
  */
 public class ServerThread implements Runnable {
-    private final String FILEPATH = "/TEMP";
+    private String filepath;
     
     private Collection<Message> conversation;
     private Collection<String> events;
@@ -31,10 +31,11 @@ public class ServerThread implements Runnable {
     
     private int port;
 
-    public ServerThread(Collection<Message> conversation, Collection<String> events, int port) {
+    public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
         this.conversation = conversation;
         this.events = events;
         this.port = port;
+        this.filepath = filepath;
         
         continuer = true;
     }
@@ -64,6 +65,9 @@ public class ServerThread implements Runnable {
                 }
                 else if (obj instanceof File){
                     
+                }
+                else {
+                    events.add("Object inconnu reçu!");
                 }
                 /*
                 System.out.println("Is Message? " + (obj instanceof Message));
