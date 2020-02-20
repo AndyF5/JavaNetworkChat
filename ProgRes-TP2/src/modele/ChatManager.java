@@ -36,12 +36,14 @@ public class ChatManager {
     }
 
     public void sendMessage(Message message) {
-        Thread messageSender = new Thread(new MessageSender(chat, message, socket));
-        messageSender.start();
+        if (message != null && socket.isConnected()){
+            Thread messageSender = new Thread(new MessageSender(chat, message, socket));
+            messageSender.start();
+        }
     }
 
     public void sendFile(File file) {
-        if (file != null){
+        if (file != null && socket.isConnected()){
             Thread fileSender = new Thread(new FileSender(events, file, socket));
             fileSender.start();
         }
@@ -49,8 +51,10 @@ public class ChatManager {
 
     public void startServer() {
         server = new Thread(new ServerThread(chat, events, 5555, FILESAVEPATH));
+        
         server.start();
     }
+    
     public void close() throws IOException{
         if(con!=null){
             con.close();

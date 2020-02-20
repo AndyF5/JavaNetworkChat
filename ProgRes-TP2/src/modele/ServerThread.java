@@ -13,6 +13,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -20,75 +22,103 @@ import javafx.application.Platform;
  * @author 1897483
  */
 public class ServerThread implements Runnable {
-    private String filepath;
-    
-    private Collection<Message> chat;
-    private Collection<String> events;
-    
+
+    private final String filepath;
+
+    private final Collection<Message> chat;
+    private final Collection<String> events;
+
     private boolean continuer;
-    
-    private int port;
+
+    private final int port;
 
     public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
         this.chat = conversation;
         this.events = events;
         this.port = port;
         this.filepath = filepath;
-        
+
         continuer = true;
     }
-        
+
+    /**
+     * Lancer le thread qui écoute les objets entrant. Le méthode execute en
+     * continue tant que le boolean continuer est vrai.
+     */
     @Override
     public void run() {
         try {
-            ServerSocket server = new ServerSocket(port);
+            ServerSocket server;
+            server = new ServerSocket(port);
             
+
             System.out.println("Server ecoute sur socket " + server);
-                
+
             Socket socket = server.accept();
             
-            while(continuer) {
-                ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-                
-                Object obj = input.readObject();
-                
-                if (obj instanceof Message){
-                    Message message = (Message)obj;
-                
-                    System.out.println("Message received : " + message.getMessage());
+            
 
-                    Platform.runLater(() -> {
-                        chat.add(message);
-                    });
-                }
-                else if (obj instanceof byte[]){
-                    byte[] fileBytes = (byte[])obj;
+            while (continuer) {
+                try {
+                    ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+                
+                    Object obj = input.readObject();
                     
-                    System.out.println("File received.");
-                    
-                    File file = new File(filepath + "/test.txt");
-                    if (!file.exists()){
-                        file.createNewFile();
+                    if (obj instanceof Message) {
+                        saveMessage(obj);
+                    } else if (obj instanceof byte[]) {
+                        saveFile(obj);
+                    } else {
+                        events.add("Object inconnu reçu!");
                     }
-                    
-                    Files.write(file.toPath(), fileBytes);
-                    
-                    Platform.runLater(() -> {
-                        events.add("Fichier reçu et stocké à : " + file.getPath());
-                    });
-                }
-                else {
-                    events.add("Object inconnu reçu!");
+                } catch (ClassNotFoundException | IOException ex) {
+                    events.add("Erreur avec le reception d'un objet.");
                 }
             }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        }
+        catch (IOException ex) {
+                events.add("Erreur en établissant le socket de reception.");
         }
     }
-    
-    public void StopThread(){
+
+    private void saveMessage(Object obj) {
+        Message message = (Message) obj;
+
+        System.out.println("Message received : " + message.getMessage());
+
+        Platform.runLater(() -> {
+            chat.add(message);
+        });
+    }
+
+    private void saveFile(Object obj) {
+        try {
+            byte[] fileBytes = (byte[]) obj;
+            
+            System.out.println("File received.");
+            
+            File file = new File(filepath + "/test.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            
+            Files.write(file.toPath(), fileBytes);
+            
+            Platform.runLater(() -> {
+                events.add("Fichier reçu et stocké à : " + file.getPath());
+            });
+        } catch (IOException ex) {
+            Platform.runLater(() -> {
+                events.add("Erreur avec le sauvegarde du fichier.");
+            });
+            Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Arreter le thread.
+     */
+    public void StopThread() {
         continuer = false;
     }
 }
