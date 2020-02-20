@@ -6,9 +6,7 @@
 package controleur;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,19 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import modele.Connection;
 import modele.Message;
-import modele.ServerThread;
 import modele.Connection;
-import modele.FileSender;
 //boite de dialogue
 import javafx.stage.FileChooser;
 import javafx.scene.Node;
-
 import java.io.File;
-
 import javafx.scene.input.MouseEvent;
-import modele.FilePacket;
+import modele.ChatManager;
 
 /**
  * FXML Controller class
@@ -41,9 +34,7 @@ import modele.FilePacket;
  * @author hamdi
  */
 public class VueController implements Initializable {
-    private final String FILESAVEPATH = "C:\\TEMP\\Destination";
-    private Connection connection;
-    
+
     @FXML
     private TextField txtIpDistntV1;
     @FXML
@@ -69,16 +60,17 @@ public class VueController implements Initializable {
     private ListView<String> listEventV1;
     @FXML
     private Label alert;
-    
+
     private File file;
     private Connection con;
-    
+    private ChatManager chatManager;
+
     FileChooser fileChooser = new FileChooser();
-    
-    private final ObservableList<Message> conversation = FXCollections.observableArrayList();
-    
+
+    private final ObservableList<Message> chat = FXCollections.observableArrayList();
+
     private final ObservableList<String> events = FXCollections.observableArrayList();
-    
+
     /**
      * Initializes the controller class.
      *
@@ -87,32 +79,38 @@ public class VueController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        listChatV1.setItems(conversation);
-        
+        listChatV1.setItems(chat);
+
         listEventV1.setItems(events);
-        
+
         btnConnectV1.setDefaultButton(true);
 
-        //listChat = new Vector<Message>();
-        Thread server = new Thread(new ServerThread(conversation, events, 5555, FILESAVEPATH));
-        server.start();
+        chatManager = new ChatManager(chat, events);
+        chatManager.startServer();
+
         //initialiser le dossier -- default
         fileChooser.setInitialDirectory(new File("c:/temp"));
+        btnEnvoyerMSGV1.setDisable(true);
+        btnEnvoyerFichierV1.setDisable(true);
     }
 
     @FXML
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
 
-        listChatV1.getItems().add(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText()));
+        chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText()));
     }
 
     @FXML
     private void btnEnvoyerFichierV1Clicked(ActionEvent event) {
-        FileSender fSend=new FileSender(listEventV1.getItems(), new FilePacket(file), con.getSenderSocket()); //******************************
+        if (file != null) {
+            chatManager.sendFile(file); //******************************
+        }
     }
+
     @FXML
-    private void txtUrlFichierClicked(MouseEvent event) throws Exception { {
-            file = fileChooser.showOpenDialog(((Node)(event.getTarget())).getScene().getWindow());
+    private void txtUrlFichierClicked(MouseEvent event) throws Exception {
+        {
+            file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
             txtUrlFichierV1.setText(file.getPath());
         }
     }
@@ -121,8 +119,10 @@ public class VueController implements Initializable {
     private void btnConnectV1Clicked(ActionEvent event) {
         alert.setText("");
         try {
-            con = new Connection(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
-
+            chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
+            btnEnvoyerMSGV1.setDisable(false);
+            btnEnvoyerFichierV1.setDisable(false);
+            btnConnectV1.setDisable(true);
         } catch (IOException ex) {
             alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,17 +131,8 @@ public class VueController implements Initializable {
 
     @FXML
     private void btnQuitterV1Clicked(ActionEvent event) {
-        //  try {
-        //       ServerConnection.close();
+        chatManager.close();
         System.exit(0);
-        /*   } catch (IOException ex) {
-            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
     }
 
-    private void testSend() {
-
-    }
-
-    
 }
