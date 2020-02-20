@@ -38,7 +38,6 @@ public class MessageSender implements Runnable {
                 ObjectOutputStream outMessage = new ObjectOutputStream(out);
                 outMessage.writeObject(message);
                 outMessage.flush();
-                //socket.shutdownOutput();
             }
             Platform.runLater(() -> {
                 chat.add(message);
