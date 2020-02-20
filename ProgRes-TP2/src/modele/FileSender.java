@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,10 @@ public class FileSender implements Runnable{
             synchronized(socket){
                 OutputStream out = socket.getOutputStream();
                 ObjectOutputStream outFile = new ObjectOutputStream(out);
-                outFile.writeObject(file);
+                
+                byte[] content = Files.readAllBytes(file.toPath());
+                
+                outFile.writeObject(content);
                 outFile.flush();
                 Platform.runLater(()->{
                     events.add("Fichier "+ file.getPath()+ " envoyé !");

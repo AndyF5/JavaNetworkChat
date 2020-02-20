@@ -23,8 +23,7 @@ public class Connection {
     public Connection(String ip, int port) throws IOException {
         senderSocket = new Socket(ip, port);
         senderSocket.setKeepAlive(true);
-        System.out.println("connection établie avec le serveur");  
-        System.out.println(ip+"/"+port);
+        
     }
     public void close() throws IOException{
         senderSocket.close();

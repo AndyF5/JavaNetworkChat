@@ -11,11 +11,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 
 /**
  *
@@ -63,18 +61,25 @@ public class ServerThread implements Runnable {
                         chat.add(message);
                     });
                 }
-                else if (obj instanceof File){
+                else if (obj instanceof byte[]){
+                    byte[] fileBytes = (byte[])obj;
                     
+                    System.out.println("File received.");
+                    
+                    File file = new File(filepath + "/test.txt");
+                    if (!file.exists()){
+                        file.createNewFile();
+                    }
+                    
+                    Files.write(file.toPath(), fileBytes);
+                    
+                    Platform.runLater(() -> {
+                        events.add("Fichier reçu et stocké à : " + file.getPath());
+                    });
                 }
                 else {
                     events.add("Object inconnu reçu!");
                 }
-                /*
-                System.out.println("Is Message? " + (obj instanceof Message));
-                
-                System.out.println("Is Message? " + (obj instanceof FilePacket));
-                */
-                
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

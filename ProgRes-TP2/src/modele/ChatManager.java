@@ -30,6 +30,8 @@ public class ChatManager {
     public void connect(String ipDistant, int portDistant) throws IOException {
         con = new Connection(ipDistant, portDistant);
         socket = con.getSenderSocket();
+        
+        events.add("Connection établie avec le serveur : [" + socket.getRemoteSocketAddress() + "]");  
     }
 
     public void sendMessage(Message message) {
