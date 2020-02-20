@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import modele.Connection;
 import modele.Message;
 import modele.ServerThread;
 
@@ -34,6 +36,7 @@ import modele.ServerThread;
  */
 public class VueController implements Initializable {
     private final String FILESAVEPATH = "/TEMP";
+    private Connection connection;
     
     @FXML
     private TextField txtIpDistntV1;
@@ -52,13 +55,17 @@ public class VueController implements Initializable {
     @FXML
     private Button btnQuitterV1;
     @FXML
-    private ListView<?> listChatV1;
+    private ListView<Message> listChatV1;
     @FXML
     private Button btnConnectV1;
 
-    Socket ServerConnection=null;
     @FXML
-    private ListView<?> listEventV1;
+    private ListView<String> listEventV1;
+    
+    private final ObservableList<Message> conversation = FXCollections.observableArrayList();
+    
+    private final ObservableList<String> events = FXCollections.observableArrayList();
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -66,8 +73,15 @@ public class VueController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        listChatV1.setItems(conversation);
         
+        listEventV1.setItems(events);
         
+        btnConnectV1.setDefaultButton(true);
+        
+        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555, FILESAVEPATH));
+        
+        server.start();
     }
 
     @FXML
@@ -80,11 +94,11 @@ public class VueController implements Initializable {
 
     @FXML
     private void btnConnectV1Clicked(ActionEvent event) {
-        btnConnectV1.setDefaultButton(true);
-        
-        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555, FILESAVEPATH));
-        
-        server.start();
+        try {
+            connection = new Connection("127.0.0.1", 5556);
+        } catch (IOException ex) {
+            // TODO Add to events
+        }
     }
     
     @FXML
