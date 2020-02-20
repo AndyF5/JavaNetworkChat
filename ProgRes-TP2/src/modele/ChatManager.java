@@ -40,8 +40,10 @@ public class ChatManager {
     }
 
     public void sendFile(File file) {
-        Thread fileSender = new Thread(new FileSender(events, file, socket));
-        fileSender.start();
+        if (file != null){
+            Thread fileSender = new Thread(new FileSender(events, file, socket));
+            fileSender.start();
+        }
     }
 
     public void startServer() {
