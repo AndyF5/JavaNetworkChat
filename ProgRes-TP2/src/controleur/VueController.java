@@ -92,11 +92,13 @@ public class VueController implements Initializable {
         fileChooser.setInitialDirectory(new File("c:/temp"));
         btnEnvoyerMSGV1.setDisable(true);
         btnEnvoyerFichierV1.setDisable(true);
+        txtUrlFichierV1.setDisable(true);
+        txtMessageV1.setDisable(true);
+        txtNomUtilisateurV1.setDisable(true);
     }
 
     @FXML
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
-
         chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText()));
     }
 
@@ -117,12 +119,20 @@ public class VueController implements Initializable {
 
     @FXML
     private void btnConnectV1Clicked(ActionEvent event) {
-        alert.setText("");
+        alert.setText("");        
         try {
             chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
             btnEnvoyerMSGV1.setDisable(false);
             btnEnvoyerFichierV1.setDisable(false);
+            
             btnConnectV1.setDisable(true);
+            txtIpDistntV1.setDisable(true);
+            txtPortV1.setDisable(true);
+            
+            txtUrlFichierV1.setDisable(false);
+            txtMessageV1.setDisable(false);
+            txtNomUtilisateurV1.setDisable(false);
+            
         } catch (IOException ex) {
             alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);

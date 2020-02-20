@@ -52,7 +52,10 @@ public class ChatManager {
         server.start();
     }
     public void close() throws IOException{
-      con.close();
+        if(con!=null){
+            con.close();
+        }
+      
       server.interrupt();
     }
 
