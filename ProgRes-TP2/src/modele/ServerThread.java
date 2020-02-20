@@ -24,7 +24,7 @@ import javafx.collections.ObservableList;
 public class ServerThread implements Runnable {
     private String filepath;
     
-    private Collection<Message> conversation;
+    private Collection<Message> chat;
     private Collection<String> events;
     
     private boolean continuer;
@@ -32,7 +32,7 @@ public class ServerThread implements Runnable {
     private int port;
 
     public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
-        this.conversation = conversation;
+        this.chat = conversation;
         this.events = events;
         this.port = port;
         this.filepath = filepath;
@@ -45,11 +45,11 @@ public class ServerThread implements Runnable {
         try {
             ServerSocket server = new ServerSocket(port);
             
+            System.out.println("Server ecoute sur socket " + server);
+                
+            Socket socket = server.accept();
+            
             while(continuer) {
-                System.out.println("Server ecoute sur socket " + server);
-                
-                Socket socket = server.accept();
-                
                 ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
                 
                 Object obj = input.readObject();
@@ -60,7 +60,7 @@ public class ServerThread implements Runnable {
                     System.out.println("Message received : " + message.getMessage());
 
                     Platform.runLater(() -> {
-                        conversation.add(message);
+                        chat.add(message);
                     });
                 }
                 else if (obj instanceof File){
