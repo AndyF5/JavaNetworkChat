@@ -41,7 +41,7 @@ import modele.FilePacket;
  * @author hamdi
  */
 public class VueController implements Initializable {
-    private final String FILESAVEPATH = "/TEMP";
+    private final String FILESAVEPATH = "C:\\TEMP\\Destination";
     private Connection connection;
     
     @FXML
@@ -94,7 +94,7 @@ public class VueController implements Initializable {
         btnConnectV1.setDefaultButton(true);
 
         //listChat = new Vector<Message>();
-        Thread server = new Thread(new ServerThread(new ArrayList<Message>(), new ArrayList<String>(), 5555, FILESAVEPATH));
+        Thread server = new Thread(new ServerThread(conversation, events, 5555, FILESAVEPATH));
         server.start();
         //initialiser le dossier -- default
         fileChooser.setInitialDirectory(new File("c:/temp"));

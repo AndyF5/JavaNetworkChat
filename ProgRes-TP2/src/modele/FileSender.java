@@ -5,6 +5,7 @@
  */
 package modele;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -20,12 +21,12 @@ import javafx.application.Platform;
  */
 public class FileSender implements Runnable{
 
-    private final Collection<String> event;
-    private final FilePacket file;
+    private final Collection<String> events;
+    private final File file;
     private final Socket socket;
 
-    public FileSender(Collection<String> event, FilePacket file, Socket socket) {
-        this.event = event;
+    public FileSender(Collection<String> events, File file, Socket socket) {
+        this.events = events;
         this.file = file;
         this.socket = socket;
     }
@@ -39,7 +40,7 @@ public class FileSender implements Runnable{
                 outFile.writeObject(file);
                 outFile.flush();
                 Platform.runLater(()->{
-                    event.add("Fichier "+ file.getFile().getPath()+ " envoyé !");
+                    events.add("Fichier "+ file.getPath()+ " envoyé !");
                 });
                 socket.shutdownOutput();
             }
