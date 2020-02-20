@@ -5,8 +5,14 @@
  */
 package modele;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  *
@@ -14,19 +20,33 @@ import java.util.Collection;
  */
 public class FileSender implements Runnable{
 
-    private final Collection<String> envent;
+    private final Collection<String> event;
     private final FilePacket file;
     private final Socket socket;
 
-    public FileSender(Collection<String> envent, FilePacket file, Socket socket) {
-        this.envent = envent;
+    public FileSender(Collection<String> event, FilePacket file, Socket socket) {
+        this.event = event;
         this.file = file;
         this.socket = socket;
     }
     
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         try {
+            synchronized(socket){
+                OutputStream out = socket.getOutputStream();
+                ObjectOutputStream outFile = new ObjectOutputStream(out);
+                outFile.writeObject(file);
+                outFile.flush();
+                Platform.runLater(()->{
+                    event.add("Fichier "+ file.getFile().getPath()+ " envoyé !");
+                });
+                socket.shutdownOutput();
+            }
+           
+        } catch (IOException ex) {
+            Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
