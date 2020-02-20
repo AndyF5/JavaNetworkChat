@@ -20,14 +20,14 @@ import javafx.application.Platform;
  * @author 1897483
  */
 public class ServerThread implements Runnable {
-    private String filepath;
+    private final String filepath;
     
-    private Collection<Message> chat;
-    private Collection<String> events;
+    private final Collection<Message> chat;
+    private final Collection<String> events;
     
     private boolean continuer;
     
-    private int port;
+    private final int port;
 
     public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
         this.chat = conversation;
