@@ -10,14 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  *
  * @author hamdi
  */
-public class App extends Application{
- 
+public class App extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root1 = FXMLLoader.load(getClass().getResource("/vue/Vue.fxml"));
@@ -25,12 +24,14 @@ public class App extends Application{
 
         stage.setTitle("Logiciel de messagerie et envoie de fichier");
         stage.setScene(scene1);
+        stage.resizableProperty().setValue(Boolean.FALSE);
         stage.show();
-        
+
     }
+
     public static void main(String[] args) {
         // TODO code application logic here
         launch(args);
     }
-    
+
 }
