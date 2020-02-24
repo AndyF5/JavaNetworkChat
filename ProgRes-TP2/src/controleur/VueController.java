@@ -138,14 +138,20 @@ public class VueController implements Initializable {
     private void btnConnectV1Clicked(ActionEvent event) {
         alert.setText("");
         //try {
-            //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
-            //System.out.println(inetAddress);
-            if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
+        //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
+        //System.out.println(inetAddress);
+        if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText()) )  {
+            if (txtPortV1.getText().matches("\\d+")) {
                 chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
             } else {
-                alert.setText("Address non valid");
-                txtIpDistntV1.requestFocus();
+                alert.setText("Port non valid");
+                txtPortV1.requestFocus();
             }
+
+        } else {
+            alert.setText("Address non valid");
+            txtIpDistntV1.requestFocus();
+        }
         //} 
         /*catch (IOException ex) {
             alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
@@ -157,7 +163,7 @@ public class VueController implements Initializable {
     private void btnQuitterV1Clicked(ActionEvent event) {
         shutdown();
     }
-    
+
     public void shutdown() {
         try {
             System.out.println("Fermeture");
@@ -168,7 +174,7 @@ public class VueController implements Initializable {
         }
     }
 
-    public static void activate(){
-        
+    public static void activate() {
+
     }
 }
