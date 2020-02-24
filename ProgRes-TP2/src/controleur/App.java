@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -25,7 +26,7 @@ public class App extends Application{
         stage.setTitle("Logiciel de messagerie et envoie de fichier");
         stage.setScene(scene1);
         stage.show();
-
+        
     }
     public static void main(String[] args) {
         // TODO code application logic here
