@@ -54,6 +54,10 @@ public class ServerThread implements Runnable {
 
             System.out.println("Server ecoute sur socket " + server);
 
+            Platform.runLater(() -> {
+                events.add("Server ecoute sur port " + server.getLocalPort());
+            });
+            
             Socket socket = server.accept();
             
             
