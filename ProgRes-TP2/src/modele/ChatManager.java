@@ -15,13 +15,12 @@ import java.util.Collection;
  * @author 1897483
  */
 public class ChatManager {
-
-    private Socket socket;
     private Connection con;
     private final Collection<Message> chat;
     private final Collection<String> events;
     private final String FILESAVEPATH = "C:/TEMP/Destination/";
     Thread server;
+    ServerThread serverThread;
 
     public ChatManager(Collection<Message> chat, Collection<String> events) {
         this.chat = chat;
@@ -29,13 +28,16 @@ public class ChatManager {
     }
 
     public void connect(String ipDistant, int portDistant) throws IOException {
-        con = new Connection(ipDistant, portDistant);
-        socket = con.getSenderSocket();
+        con = new Connection(ipDistant, portDistant, events);
         
-        events.add("Connection établie avec le serveur : [" + socket.getRemoteSocketAddress() + "]");  
+        Thread createCon = new Thread(con);
+        
+        con.run();
     }
 
     public void sendMessage(Message message) {
+        Socket socket = con.getSenderSocket();
+        
         if (message != null && socket.isConnected()){
             Thread messageSender = new Thread(new MessageSender(chat, message, socket));
             messageSender.start();
@@ -43,6 +45,7 @@ public class ChatManager {
     }
 
     public void sendFile(File file) {
+        Socket socket = con.getSenderSocket();
         if (file != null && socket.isConnected()){
             Thread fileSender = new Thread(new FileSender(events, file, socket));
             fileSender.start();
@@ -50,7 +53,9 @@ public class ChatManager {
     }
 
     public void startServer() {
-        server = new Thread(new ServerThread(chat, events, 5555, FILESAVEPATH));
+        serverThread = new ServerThread(chat, events, 4444, FILESAVEPATH);
+        
+        server = new Thread(serverThread);
         
         server.start();
     }
@@ -59,8 +64,7 @@ public class ChatManager {
         if(con!=null){
             con.close();
         }
-      
-      server.interrupt();
+        serverThread.StopThread();
     }
 
 }

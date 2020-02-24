@@ -19,11 +19,18 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root1 = FXMLLoader.load(getClass().getResource("/vue/Vue.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/Vue.fxml"));
+        Parent root1 = loader.load();
         Scene scene1 = new Scene(root1);
 
         stage.setTitle("Logiciel de messagerie et envoie de fichier");
         stage.setScene(scene1);
+        
+        VueController controller = loader.getController();
+        
+        stage.setOnHidden(e -> controller.shutdown());
+        
+       
         stage.resizableProperty().setValue(Boolean.FALSE);
         stage.show();
 
