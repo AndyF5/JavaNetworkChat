@@ -21,7 +21,7 @@ public class Connection  implements Runnable{
     private Socket senderSocket = null;
     private final String ip;
     private final int port;
-    private Collection<String> events;
+    private final Collection<String> events;
     
     public Connection(String ip, int port, Collection<String> events) {
         this.ip = ip;
@@ -38,8 +38,7 @@ public class Connection  implements Runnable{
     public void close() throws IOException{
         senderSocket.close();
     }
-
-    Thread thConnexion = new Thread();
+    
     @Override
     public void run() {
         try {

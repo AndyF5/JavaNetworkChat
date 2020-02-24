@@ -126,7 +126,7 @@ public class VueController implements Initializable {
     @FXML
     private void btnConnectV1Clicked(ActionEvent event) {
         alert.setText("");
-        try {
+        //try {
             //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
             //System.out.println(inetAddress);
             if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
@@ -145,23 +145,11 @@ public class VueController implements Initializable {
                 alert.setText("Address non valid");
                 txtIpDistntV1.requestFocus();
             }
-
-            chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
-            btnEnvoyerMSGV1.setDisable(false);
-            btnEnvoyerFichierV1.setDisable(false);
-
-            btnConnectV1.setDisable(true);
-            txtIpDistntV1.setDisable(true);
-            txtPortV1.setDisable(true);
-
-            txtUrlFichierV1.setDisable(false);
-            txtMessageV1.setDisable(false);
-            txtNomUtilisateurV1.setDisable(false);
-
-        } catch (IOException ex) {
+        //} 
+        /*catch (IOException ex) {
             alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 
     @FXML
@@ -179,4 +167,7 @@ public class VueController implements Initializable {
         }
     }
 
+    public static void activate(){
+        
+    }
 }

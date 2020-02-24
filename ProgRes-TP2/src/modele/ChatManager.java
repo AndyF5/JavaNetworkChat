@@ -27,12 +27,12 @@ public class ChatManager {
         this.events = events;
     }
 
-    public void connect(String ipDistant, int portDistant) throws IOException {
+    public void connect(String ipDistant, int portDistant) {
         con = new Connection(ipDistant, portDistant, events);
         
         Thread createCon = new Thread(con);
         
-        con.run();
+        createCon.start();
     }
 
     public void sendMessage(Message message) {
