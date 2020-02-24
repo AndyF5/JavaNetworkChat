@@ -64,6 +64,7 @@ public class VueController implements Initializable {
     private File file;
     private Connection con;
     private ChatManager chatManager;
+    public String fileName;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -114,6 +115,7 @@ public class VueController implements Initializable {
         {
             file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
             txtUrlFichierV1.setText(file.getPath());
+            fileName=file.getName();
         }
     }
 
