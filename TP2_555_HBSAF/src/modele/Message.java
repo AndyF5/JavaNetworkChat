@@ -15,8 +15,8 @@ public class Message implements Serializable{
 
     private final String message;
     private final String user;
-    private final String type;
-
+    private transient boolean sentByThis;
+    
     public String getMessage() {
         return message;
     }
@@ -25,14 +25,19 @@ public class Message implements Serializable{
         return user;
     }
 
-    public String getType() {
-        return type;
+    public boolean isSentByThis() {
+        return sentByThis;
+    }
+
+    public Message(String message, String user, boolean sentByThis) {
+        this.message = message;
+        this.user = user;
+        this.sentByThis = sentByThis;
     }
 
     public Message(String user , String message) {
         this.message = message;
         this.user = user;
-        this.type = "Message";
     }
 
     @Override

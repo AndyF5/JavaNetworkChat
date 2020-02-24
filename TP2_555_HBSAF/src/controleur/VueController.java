@@ -138,7 +138,7 @@ public class VueController implements Initializable {
 
     @FXML
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
-        chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText()));
+        chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText(), true));
         txtMessageV1.setText("");
     }
 
