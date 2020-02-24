@@ -6,6 +6,7 @@
 package modele;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -42,14 +43,18 @@ public class Connection  implements Runnable{
     @Override
     public void run() {
         try {
-            senderSocket = new Socket(ip, port);
+            senderSocket = new Socket();
+            senderSocket.connect(new InetSocketAddress(ip, port), 1000);
             senderSocket.setKeepAlive(true);
             
             Platform.runLater(() -> {
                 events.add("Connection établie avec le serveur : [" + senderSocket.getRemoteSocketAddress() + "]");
+                InterfaceInteraction.connexionReussi();
             });
         } catch (IOException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            Platform.runLater(() -> {
+                events.add("Serveur non joinable : [" + ip + " : " + port + "]");
+            });
         }
     }
 }

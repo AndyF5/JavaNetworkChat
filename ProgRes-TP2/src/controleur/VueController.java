@@ -30,6 +30,7 @@ import java.net.InetAddress;
 import java.util.regex.Pattern;
 import javafx.scene.input.MouseEvent;
 import modele.ChatManager;
+import modele.InterfaceInteraction;
 
 /**
  * FXML Controller class
@@ -99,6 +100,16 @@ public class VueController implements Initializable {
         txtUrlFichierV1.setDisable(true);
         txtMessageV1.setDisable(true);
         txtNomUtilisateurV1.setDisable(true);
+        
+        InterfaceInteraction.setInput_IP(txtIpDistntV1);
+        InterfaceInteraction.setInput_Port(txtPortV1);
+        InterfaceInteraction.setInput_UserName(txtNomUtilisateurV1);
+        InterfaceInteraction.setInput_Message(txtMessageV1);
+        InterfaceInteraction.setInput_FilePath(txtUrlFichierV1);
+        
+        InterfaceInteraction.setBtn_Connexion(btnConnectV1);
+        InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSGV1);
+        InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichierV1);
     }
 
     @FXML
@@ -131,16 +142,6 @@ public class VueController implements Initializable {
             //System.out.println(inetAddress);
             if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
                 chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
-                btnEnvoyerMSGV1.setDisable(false);
-                btnEnvoyerFichierV1.setDisable(false);
-
-                btnConnectV1.setDisable(true);
-                txtIpDistntV1.setDisable(true);
-                txtPortV1.setDisable(true);
-
-                txtUrlFichierV1.setDisable(false);
-                txtMessageV1.setDisable(false);
-                txtNomUtilisateurV1.setDisable(false);
             } else {
                 alert.setText("Address non valid");
                 txtIpDistntV1.requestFocus();
