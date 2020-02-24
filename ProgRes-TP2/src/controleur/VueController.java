@@ -26,6 +26,8 @@ import javafx.stage.FileChooser;
 import javafx.scene.Node;
 import java.io.File;
 import javafx.application.Platform;
+import java.net.InetAddress;
+import java.util.regex.Pattern;
 import javafx.scene.input.MouseEvent;
 import modele.ChatManager;
 
@@ -102,12 +104,13 @@ public class VueController implements Initializable {
     @FXML
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
         chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText()));
+        txtMessageV1.setText("");
     }
 
     @FXML
     private void btnEnvoyerFichierV1Clicked(ActionEvent event) {
         if (file != null) {
-            chatManager.sendFile(file); 
+            chatManager.sendFile(file);
         }
     }
 
@@ -116,26 +119,45 @@ public class VueController implements Initializable {
         {
             file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
             txtUrlFichierV1.setText(file.getPath());
-            fileName=file.getName();
+            fileName = file.getName();
         }
     }
 
     @FXML
     private void btnConnectV1Clicked(ActionEvent event) {
-        alert.setText("");        
+        alert.setText("");
         try {
+            //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
+            //System.out.println(inetAddress);
+            if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
+                chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
+                btnEnvoyerMSGV1.setDisable(false);
+                btnEnvoyerFichierV1.setDisable(false);
+
+                btnConnectV1.setDisable(true);
+                txtIpDistntV1.setDisable(true);
+                txtPortV1.setDisable(true);
+
+                txtUrlFichierV1.setDisable(false);
+                txtMessageV1.setDisable(false);
+                txtNomUtilisateurV1.setDisable(false);
+            } else {
+                alert.setText("Address non valid");
+                txtIpDistntV1.requestFocus();
+            }
+
             chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
             btnEnvoyerMSGV1.setDisable(false);
             btnEnvoyerFichierV1.setDisable(false);
-            
+
             btnConnectV1.setDisable(true);
             txtIpDistntV1.setDisable(true);
             txtPortV1.setDisable(true);
-            
+
             txtUrlFichierV1.setDisable(false);
             txtMessageV1.setDisable(false);
             txtNomUtilisateurV1.setDisable(false);
-            
+
         } catch (IOException ex) {
             alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);

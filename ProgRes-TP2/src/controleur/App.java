@@ -31,7 +31,6 @@ public class App extends Application{
         stage.setOnHidden(e -> controller.shutdown());
         
         stage.show();
-
     }
     public static void main(String[] args) {
         // TODO code application logic here

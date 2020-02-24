@@ -7,25 +7,50 @@ package modele;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  *
  * @author 1897483
  */
-public class Connection {
+public class Connection  implements Runnable{
 
     private Socket senderSocket = null;
+    private final String ip;
+    private final int port;
+    private Collection<String> events;
+    
+    public Connection(String ip, int port, Collection<String> events) {
+        this.ip = ip;
+        this.port = port;
+        this.events = events;
+    }
+    
 
     public Socket getSenderSocket() {
         return senderSocket;
     }
 
-    public Connection(String ip, int port) throws IOException {
-        senderSocket = new Socket(ip, port);
-        senderSocket.setKeepAlive(true);
-        
-    }
+    
     public void close() throws IOException{
         senderSocket.close();
+    }
+
+    Thread thConnexion = new Thread();
+    @Override
+    public void run() {
+        try {
+            senderSocket = new Socket(ip, port);
+            senderSocket.setKeepAlive(true);
+            
+            Platform.runLater(() -> {
+                events.add("Connection établie avec le serveur : [" + senderSocket.getRemoteSocketAddress() + "]");
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

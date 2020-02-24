@@ -15,8 +15,6 @@ import java.util.Collection;
  * @author 1897483
  */
 public class ChatManager {
-
-    private Socket socket;
     private Connection con;
     private final Collection<Message> chat;
     private final Collection<String> events;
@@ -30,13 +28,16 @@ public class ChatManager {
     }
 
     public void connect(String ipDistant, int portDistant) throws IOException {
-        con = new Connection(ipDistant, portDistant);
-        socket = con.getSenderSocket();
+        con = new Connection(ipDistant, portDistant, events);
         
-        events.add("Connection établie avec le serveur : [" + socket.getRemoteSocketAddress() + "]");  
+        Thread createCon = new Thread(con);
+        
+        con.run();
     }
 
     public void sendMessage(Message message) {
+        Socket socket = con.getSenderSocket();
+        
         if (message != null && socket.isConnected()){
             Thread messageSender = new Thread(new MessageSender(chat, message, socket));
             messageSender.start();
@@ -44,6 +45,7 @@ public class ChatManager {
     }
 
     public void sendFile(File file) {
+        Socket socket = con.getSenderSocket();
         if (file != null && socket.isConnected()){
             Thread fileSender = new Thread(new FileSender(events, file, socket));
             fileSender.start();
