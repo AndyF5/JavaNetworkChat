@@ -14,19 +14,28 @@ import java.io.Serializable;
  * @author 1897654
  */
 public class FilePacket implements Serializable{
-    private final String type;
-    private final File file;
+    private String fileName;
+    
+    private byte[] contenu;
 
-    public FilePacket(File file) {
-        this.type = "File";
-        this.file = file;
+    public FilePacket(String fileName, byte[] contenu) {
+        this.fileName = fileName;
+        this.contenu = contenu;
     }
 
-    public String getType() {
-        return type;
+    public String getFileName() {
+        return fileName;
     }
 
-    public File getFile() {
-        return file;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public byte[] getContenu() {
+        return contenu;
+    }
+
+    public void setContenu(byte[] contenu) {
+        this.contenu = contenu;
     }
 }

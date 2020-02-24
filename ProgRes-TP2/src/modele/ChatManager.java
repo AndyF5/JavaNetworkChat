@@ -20,7 +20,7 @@ public class ChatManager {
     private Connection con;
     private final Collection<Message> chat;
     private final Collection<String> events;
-    private final String FILESAVEPATH = "C:/TEMP/Destination";
+    private final String FILESAVEPATH = "C:/TEMP/Destination/";
     Thread server;
 
     public ChatManager(Collection<Message> chat, Collection<String> events) {

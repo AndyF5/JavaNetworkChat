@@ -40,15 +40,15 @@ public class FileSender implements Runnable{
                 ObjectOutputStream outFile = new ObjectOutputStream(out);
                 
                 byte[] content = Files.readAllBytes(file.toPath());
+
+                FilePacket filePacket = new FilePacket(file.getName(), content);
                 
-                outFile.writeObject(content);
+                outFile.writeObject(filePacket);
                 outFile.flush();
                 Platform.runLater(()->{
                     events.add("Fichier "+ file.getPath()+ " envoyé !");
                 });
-                socket.shutdownOutput();
             }
-           
         } catch (IOException ex) {
             Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, ex);
         }

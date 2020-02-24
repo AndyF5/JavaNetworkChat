@@ -66,13 +66,16 @@ public class ServerThread implements Runnable {
                     
                     if (obj instanceof Message) {
                         saveMessage(obj);
-                    } else if (obj instanceof byte[]) {
+                    } else if (obj instanceof FilePacket) {
                         saveFile(obj);
                     } else {
                         events.add("Object inconnu reçu!");
                     }
                 } catch (ClassNotFoundException | IOException ex) {
-                    events.add("Erreur avec le reception d'un objet.");
+                    Platform.runLater(() -> {
+                        System.out.println(ex.getMessage());
+                        events.add("Erreur avec le reception d'un objet.");
+                    });
                 }
             }
         }
@@ -93,16 +96,17 @@ public class ServerThread implements Runnable {
 
     private void saveFile(Object obj) {
         try {
-            byte[] fileBytes = (byte[]) obj;
+            FilePacket fp = (FilePacket) obj;
             
-            System.out.println("File received.");
+            System.out.println("File " + fp.getFileName() + " received.");
+            System.out.println("Saving file : " + filepath + fp.getFileName());
+            File file = new File(filepath + fp.getFileName());
             
-            File file = new File(filepath + "/test.txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
             
-            Files.write(file.toPath(), fileBytes);
+            Files.write(file.toPath(), fp.getContenu());
             
             Platform.runLater(() -> {
                 events.add("Fichier reçu et stocké à : " + file.getPath());
