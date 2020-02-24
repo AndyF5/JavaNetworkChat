@@ -104,8 +104,12 @@ public class ServerThread implements Runnable {
             
             System.out.println("File " + fp.getFileName() + " received.");
             System.out.println("Saving file : " + filepath + fp.getFileName());
+            File file2=new File(filepath);
+            file2.mkdirs();
             File file = new File(filepath + fp.getFileName());
-            file.mkdirs();
+            
+            
+        
             if (!file.exists()) {
                 file.createNewFile();
             }
