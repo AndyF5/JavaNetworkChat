@@ -25,6 +25,7 @@ import modele.Connection;
 import javafx.stage.FileChooser;
 import javafx.scene.Node;
 import java.io.File;
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import modele.ChatManager;
 
@@ -142,9 +143,18 @@ public class VueController implements Initializable {
     }
 
     @FXML
-    private void btnQuitterV1Clicked(ActionEvent event) throws IOException {
-        chatManager.close();
-        System.exit(0);
+    private void btnQuitterV1Clicked(ActionEvent event) {
+        shutdown();
+    }
+    
+    public void shutdown() {
+        try {
+            System.out.println("Fermeture");
+            chatManager.close();
+            Platform.exit();
+        } catch (IOException ex) {
+            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

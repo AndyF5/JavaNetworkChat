@@ -31,6 +31,8 @@ public class ServerThread implements Runnable {
     private boolean continuer;
 
     private final int port;
+    
+    private ServerSocket server;
 
     public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
         this.chat = conversation;
@@ -48,7 +50,7 @@ public class ServerThread implements Runnable {
     @Override
     public void run() {
         try {
-            ServerSocket server;
+            
             server = new ServerSocket(port);
             
 
@@ -60,8 +62,6 @@ public class ServerThread implements Runnable {
             
             Socket socket = server.accept();
             
-            
-
             while (continuer) {
                 try {
                     ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -84,7 +84,10 @@ public class ServerThread implements Runnable {
             }
         }
         catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Platform.runLater(() -> {
                 events.add("Erreur en établissant le socket de reception.");
+            });
         }
     }
 
@@ -132,5 +135,12 @@ public class ServerThread implements Runnable {
      */
     public void StopThread() {
         continuer = false;
+        try {
+            if (server != null){
+                server.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
