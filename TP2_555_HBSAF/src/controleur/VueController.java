@@ -28,7 +28,14 @@ import java.io.File;
 import javafx.application.Platform;
 import java.net.InetAddress;
 import java.util.regex.Pattern;
+import javafx.geometry.Insets;
+import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import modele.ChatManager;
 import modele.InterfaceInteraction;
 
@@ -110,6 +117,23 @@ public class VueController implements Initializable {
         InterfaceInteraction.setBtn_Connexion(btnConnectV1);
         InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSGV1);
         InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichierV1);
+        
+        
+        listChatV1.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
+            BackgroundFill backgroundUser = new BackgroundFill(Color.DARKSEAGREEN , CornerRadii.EMPTY, Insets.EMPTY);
+            @Override
+            public ListCell<Message> call(ListView<Message> msg) {
+                return new ListCell<Message>(){
+                     @Override
+                    public void updateItem(Message item, boolean empty){
+                        super.updateItem(item, empty);
+                        if (item.getUser() == null ? txtNomUtilisateurV1.getText() == null : item.getUser().equals(txtNomUtilisateurV1.getText())){
+                            setBackground(new Background(backgroundUser));
+                        }
+                    }  
+                };
+            }
+        });
     }
 
     @FXML
