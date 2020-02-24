@@ -53,7 +53,7 @@ public class ChatManager {
     }
 
     public void startServer() {
-        serverThread = new ServerThread(chat, events, 5555, FILESAVEPATH);
+        serverThread = new ServerThread(chat, events, 4444, FILESAVEPATH);
         
         server = new Thread(serverThread);
         
