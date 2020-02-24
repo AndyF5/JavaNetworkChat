@@ -107,36 +107,49 @@ public class VueController implements Initializable {
         txtUrlFichierV1.setDisable(true);
         txtMessageV1.setDisable(true);
         txtNomUtilisateurV1.setDisable(true);
-        
+
         InterfaceInteraction.setInput_IP(txtIpDistntV1);
         InterfaceInteraction.setInput_Port(txtPortV1);
         InterfaceInteraction.setInput_UserName(txtNomUtilisateurV1);
         InterfaceInteraction.setInput_Message(txtMessageV1);
         InterfaceInteraction.setInput_FilePath(txtUrlFichierV1);
-        
+
         InterfaceInteraction.setBtn_Connexion(btnConnectV1);
         InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSGV1);
         InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichierV1);
-        
-        
+
         listChatV1.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
-            BackgroundFill backgroundUser = new BackgroundFill(Color.DARKSEAGREEN , CornerRadii.EMPTY, Insets.EMPTY);
+            BackgroundFill backgroundUser = new BackgroundFill(Color.LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY);
+            
+
             @Override
             public ListCell<Message> call(ListView<Message> msg) {
-                return new ListCell<Message>(){
-                     @Override
-                    public void updateItem(Message item, boolean empty){
+                return new ListCell<Message>() {
+                    @Override
+                    public void updateItem(Message item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item.getUser() == null ? txtNomUtilisateurV1.getText() == null : item.getUser().equals(txtNomUtilisateurV1.getText())){
-                            setBackground(new Background(backgroundUser));
+                        if (item == null) {
+
+                            setText(null);
+                        } else {
+
+                            if (item.isSentByThis()) {
+                                setBackground(new Background(backgroundUser));
+                                setText(item.toString());
+                                
+                            } else {
+                                setText(item.toString().toUpperCase());
+                            }
                         }
-                    }  
+
+                    }
                 };
             }
         });
     }
 
     @FXML
+
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
         chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText(), true));
         txtMessageV1.setText("");
@@ -164,7 +177,7 @@ public class VueController implements Initializable {
         //try {
         //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
         //System.out.println(inetAddress);
-        if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText()) )  {
+        if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
             if (txtPortV1.getText().matches("\\d+")) {
                 chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
             } else {

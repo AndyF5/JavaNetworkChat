@@ -11,12 +11,12 @@ import java.io.Serializable;
  *
  * @author 1897483
  */
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     private final String message;
     private final String user;
     private transient boolean sentByThis;
-    
+
     public String getMessage() {
         return message;
     }
@@ -29,13 +29,13 @@ public class Message implements Serializable{
         return sentByThis;
     }
 
-    public Message(String message, String user, boolean sentByThis) {
+    public Message(String user, String message, boolean sentByThis) {
         this.message = message;
         this.user = user;
         this.sentByThis = sentByThis;
     }
 
-    public Message(String user , String message) {
+    public Message(String user, String message) {
         this.message = message;
         this.user = user;
     }
