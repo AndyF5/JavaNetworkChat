@@ -28,7 +28,16 @@ import java.io.File;
 import javafx.application.Platform;
 import java.net.InetAddress;
 import java.util.regex.Pattern;
+import javafx.geometry.Insets;
+import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import modele.ChatManager;
 import modele.InterfaceInteraction;
 
@@ -40,33 +49,32 @@ import modele.InterfaceInteraction;
 public class VueController implements Initializable {
 
     @FXML
-    private TextField txtIpDistntV1;
+    private TextField txtIpDistnt;
     @FXML
-    private TextField txtNomUtilisateurV1;
+    private TextField txtNomUtilisateur;
     @FXML
-    private TextField txtPortV1;
+    private TextField txtPort;
     @FXML
-    private TextField txtMessageV1;
+    private TextField txtMessage;
     @FXML
-    private TextField txtUrlFichierV1;
+    private TextField txtUrlFichier;
     @FXML
-    private Button btnEnvoyerMSGV1;
+    private Button btnEnvoyerMSG;
     @FXML
-    private Button btnEnvoyerFichierV1;
+    private Button btnEnvoyerFichier;
     @FXML
-    private Button btnQuitterV1;
+    private Button btnQuitter;
     @FXML
-    private ListView<Message> listChatV1;
+    private ListView<Message> listChat;
     @FXML
-    private Button btnConnectV1;
+    private Button btnConnect;
 
     @FXML
-    private ListView<String> listEventV1;
+    private ListView<String> listEvent;
     @FXML
     private Label alert;
 
     private File file;
-    private Connection con;
     private ChatManager chatManager;
     public String fileName;
 
@@ -75,6 +83,10 @@ public class VueController implements Initializable {
     private final ObservableList<Message> chat = FXCollections.observableArrayList();
 
     private final ObservableList<String> events = FXCollections.observableArrayList();
+    @FXML
+    private ImageView imageView;
+
+    Image image;
 
     /**
      * Initializes the controller class.
@@ -84,44 +96,76 @@ public class VueController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        listChatV1.setItems(chat);
+        listChat.setItems(chat);
 
-        listEventV1.setItems(events);
+        listEvent.setItems(events);
 
-        btnConnectV1.setDefaultButton(true);
+        btnConnect.setDefaultButton(true);
 
         chatManager = new ChatManager(chat, events);
         chatManager.startServer();
 
         //initialiser le dossier -- default
         fileChooser.setInitialDirectory(new File("c:/temp"));
-        btnEnvoyerMSGV1.setDisable(true);
-        btnEnvoyerFichierV1.setDisable(true);
-        txtUrlFichierV1.setDisable(true);
-        txtMessageV1.setDisable(true);
-        txtNomUtilisateurV1.setDisable(true);
-        
-        InterfaceInteraction.setInput_IP(txtIpDistntV1);
-        InterfaceInteraction.setInput_Port(txtPortV1);
-        InterfaceInteraction.setInput_UserName(txtNomUtilisateurV1);
-        InterfaceInteraction.setInput_Message(txtMessageV1);
-        InterfaceInteraction.setInput_FilePath(txtUrlFichierV1);
-        
-        InterfaceInteraction.setBtn_Connexion(btnConnectV1);
-        InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSGV1);
-        InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichierV1);
+        btnEnvoyerMSG.setDisable(true);
+        btnEnvoyerFichier.setDisable(true);
+        txtUrlFichier.setDisable(true);
+        txtMessage.setDisable(true);
+        txtNomUtilisateur.setDisable(true);
+
+        InterfaceInteraction.setInput_IP(txtIpDistnt);
+        InterfaceInteraction.setInput_Port(txtPort);
+        InterfaceInteraction.setInput_UserName(txtNomUtilisateur);
+        InterfaceInteraction.setInput_Message(txtMessage);
+        InterfaceInteraction.setInput_FilePath(txtUrlFichier);
+
+        InterfaceInteraction.setBtn_Connexion(btnConnect);
+        InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSG);
+        InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichier);
+
+        listChat.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
+            BackgroundFill backgroundUser = new BackgroundFill(Color.LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY);
+
+            @Override
+            public ListCell<Message> call(ListView<Message> msg) {
+                return new ListCell<Message>() {
+                    @Override
+                    public void updateItem(Message item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null) {
+
+                            setText(null);
+                        } else {
+
+                            if (item.isSentByThis()) {
+                                setBackground(new Background(backgroundUser));
+                                setText(item.toString());
+
+                            } else {
+                                setText("--> " + item.toString());
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     @FXML
-    private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
-        chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText(), true));
-        txtMessageV1.setText("");
+    private void btnEnvoyerMSGClicked(ActionEvent event) {
+        chatManager.sendMessage(new Message(txtNomUtilisateur.getText(), txtMessage.getText(), true));
+        txtMessage.setText("");
+
+        image = new Image("/vue/img.png");
+        imageView.setImage(image);
     }
 
     @FXML
-    private void btnEnvoyerFichierV1Clicked(ActionEvent event) {
+    private void btnEnvoyerFichierClicked(ActionEvent event) {
         if (file != null) {
             chatManager.sendFile(file);
+            image = new Image("/vue/img2.png");
+            imageView.setImage(image);
         }
     }
 
@@ -129,38 +173,33 @@ public class VueController implements Initializable {
     private void txtUrlFichierClicked(MouseEvent event) throws Exception {
         {
             file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
-            txtUrlFichierV1.setText(file.getPath());
+            txtUrlFichier.setText(file.getPath());
             fileName = file.getName();
         }
     }
 
     @FXML
-    private void btnConnectV1Clicked(ActionEvent event) {
+    private void btnConnectClicked(ActionEvent event) {
         alert.setText("");
-        //try {
-        //InetAddress inetAddress = InetAddress.getByName(txtIpDistntV1.getText());
-        //System.out.println(inetAddress);
-        if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText()) )  {
-            if (txtPortV1.getText().matches("\\d+")) {
-                chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
+
+        if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistnt.getText())) {
+            if (txtPort.getText().matches("\\d+")) {
+                chatManager.connect(txtIpDistnt.getText(), Integer.parseInt(txtPort.getText()));
+                image = new Image("/vue/img4.png");
+                imageView.setImage(image);
             } else {
                 alert.setText("Port non valid");
-                txtPortV1.requestFocus();
+                txtPort.requestFocus();
             }
 
         } else {
             alert.setText("Address non valid");
-            txtIpDistntV1.requestFocus();
+            txtIpDistnt.requestFocus();
         }
-        //} 
-        /*catch (IOException ex) {
-            alert.setText("Le serveur est Injoignable : " + txtIpDistntV1.getText() + "/" + Integer.parseInt(txtPortV1.getText()));
-            Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
     }
 
     @FXML
-    private void btnQuitterV1Clicked(ActionEvent event) {
+    private void btnQuitterClicked(ActionEvent event) {
         shutdown();
     }
 
@@ -172,9 +211,5 @@ public class VueController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(VueController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public static void activate() {
-
     }
 }

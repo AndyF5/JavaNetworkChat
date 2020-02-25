@@ -5,10 +5,13 @@
  */
 package controleur;
 
+import java.io.FileInputStream;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -17,6 +20,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+    String pathIMG ="/vue/img.png";
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/vue/Vue.fxml"));
@@ -29,9 +33,9 @@ public class App extends Application {
         VueController controller = loader.getController();
         
         stage.setOnHidden(e -> controller.shutdown());
-        
-       
+               
         stage.resizableProperty().setValue(Boolean.FALSE);
+        
         stage.show();
 
     }
