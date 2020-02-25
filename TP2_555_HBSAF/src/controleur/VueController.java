@@ -30,6 +30,8 @@ import java.net.InetAddress;
 import java.util.regex.Pattern;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -82,6 +84,10 @@ public class VueController implements Initializable {
     private final ObservableList<Message> chat = FXCollections.observableArrayList();
 
     private final ObservableList<String> events = FXCollections.observableArrayList();
+    @FXML
+    private ImageView imageView;
+
+    Image image;
 
     /**
      * Initializes the controller class.
@@ -120,7 +126,6 @@ public class VueController implements Initializable {
 
         listChatV1.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
             BackgroundFill backgroundUser = new BackgroundFill(Color.LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY);
-            
 
             @Override
             public ListCell<Message> call(ListView<Message> msg) {
@@ -136,9 +141,9 @@ public class VueController implements Initializable {
                             if (item.isSentByThis()) {
                                 setBackground(new Background(backgroundUser));
                                 setText(item.toString());
-                                
+
                             } else {
-                                setText(item.toString().toUpperCase());
+                                setText("--> " + item.toString());
                             }
                         }
 
@@ -153,12 +158,17 @@ public class VueController implements Initializable {
     private void btnEnvoyerMSGV1Clicked(ActionEvent event) {
         chatManager.sendMessage(new Message(txtNomUtilisateurV1.getText(), txtMessageV1.getText(), true));
         txtMessageV1.setText("");
+
+        image = new Image("/vue/img.png");
+        imageView.setImage(image);
     }
 
     @FXML
     private void btnEnvoyerFichierV1Clicked(ActionEvent event) {
         if (file != null) {
             chatManager.sendFile(file);
+            image = new Image("/vue/img2.png");
+            imageView.setImage(image);
         }
     }
 
@@ -180,6 +190,8 @@ public class VueController implements Initializable {
         if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistntV1.getText())) {
             if (txtPortV1.getText().matches("\\d+")) {
                 chatManager.connect(txtIpDistntV1.getText(), Integer.parseInt(txtPortV1.getText()));
+                image = new Image("/vue/img4.png");
+                imageView.setImage(image);
             } else {
                 alert.setText("Port non valid");
                 txtPortV1.requestFocus();
