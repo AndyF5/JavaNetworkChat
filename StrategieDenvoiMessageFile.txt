@@ -1,0 +1,22 @@
+Strategie pour l'envoi des messages et des fichier via le même socket
+---------------------------------------------------------------------
+
+L'application utilise les classes ObjectOutputStream et ObjectInputStream pour envoi et reception
+de tous qui et envoyer dans les sockets.
+
+2 classes sont utilisé pour representer les « packages » envoyé:
+
+Message:
+    user - String,
+    message - String
+
+FilePacket:
+    filename - String,
+    contenu - byte[]
+
+Quand l'application reçoit un message il utilise l'operateur « insanceof » dans un serie de
+« if-else » pour identifier si le objet et un Message, un FilePacket ou un objet inconnu.
+
+Dans ce dernier cas l'utilisateur est averti que l'application à reçu un objet inconnu.
+
+Dans les autres cas les objets sont « cast » dans leur type approprié.
