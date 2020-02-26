@@ -46,7 +46,7 @@ public class Connection  implements Runnable{
             senderSocket.setKeepAlive(true);
             
             Platform.runLater(() -> {
-                events.add("Connection établie avec le serveur : [" + senderSocket.getRemoteSocketAddress() + "]");
+                events.add("Connection Établie avec le serveur : [" + senderSocket.getRemoteSocketAddress() + "]");
                 InterfaceInteraction.connexionReussi();
             });
         } catch (IOException ex) {
