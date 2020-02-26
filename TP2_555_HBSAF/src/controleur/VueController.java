@@ -20,13 +20,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import modele.Message;
-import modele.Connection;
 //boite de dialogue
 import javafx.stage.FileChooser;
 import javafx.scene.Node;
 import java.io.File;
 import javafx.application.Platform;
-import java.net.InetAddress;
 import java.util.regex.Pattern;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListCell;
@@ -191,7 +189,6 @@ public class VueController implements Initializable {
                 alert.setText("Port non valid");
                 txtPort.requestFocus();
             }
-
         } else {
             alert.setText("Address non valid");
             txtIpDistnt.requestFocus();

@@ -87,16 +87,14 @@ public final class InterfaceInteraction {
         InterfaceInteraction.input_UserName = input_UserName;
     }
     
-    
-
     public static void connexionReussi() {
+
         btn_EnvoyerMessage.setDisable(false);
         btn_EnvoyerFichier.setDisable(false);
-
         btn_Connexion.setDisable(true);
+
         input_IP.setDisable(true);
         input_Port.setDisable(true);
-
         input_FilePath.setDisable(false);
         input_Message.setDisable(false);
         input_UserName.setDisable(false);

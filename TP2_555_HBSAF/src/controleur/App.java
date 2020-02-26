@@ -5,13 +5,10 @@
  */
 package controleur;
 
-import java.io.FileInputStream;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -27,7 +24,7 @@ public class App extends Application {
         Parent root1 = loader.load();
         Scene scene1 = new Scene(root1);
 
-        stage.setTitle("Logiciel de messagerie et envoie de fichier");
+        stage.setTitle("Logiciel de messagerie et d'envoie de fichier");
         stage.setScene(scene1);
         
         VueController controller = loader.getController();

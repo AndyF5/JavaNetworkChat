@@ -5,7 +5,7 @@
  */
 package modele;
 
-import java.io.File;
+
 import java.io.Serializable;
 
 /** Object qui respresent un fichier envoyé par réseau.
