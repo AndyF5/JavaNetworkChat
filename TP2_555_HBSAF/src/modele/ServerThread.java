@@ -83,6 +83,7 @@ public class ServerThread implements Runnable {
                 catch (IOException ex) {
                 	Platform.runLater(() -> {
                         events.add("Connexion terminée avec l'autre machine !");
+                        InterfaceInteraction.connexionPerdu();
                     });
                     break;
                 }
