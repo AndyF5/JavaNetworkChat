@@ -105,8 +105,10 @@ public class VueController implements Initializable {
 
         //initialiser le dossier -- default
         fileChooser.setInitialDirectory(new File("c:/temp"));
+        //Activation des BTN
         btnEnvoyerMSG.setDisable(true);
         btnEnvoyerFichier.setDisable(true);
+        //Activation des zones de textes
         txtUrlFichier.setDisable(true);
         txtMessage.setDisable(true);
         txtNomUtilisateur.setDisable(true);
@@ -121,6 +123,7 @@ public class VueController implements Initializable {
         InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSG);
         InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichier);
 
+        //Methode pour changer la couleur de la ligne du local user lors d'une discution 
         listChat.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
             BackgroundFill backgroundUser = new BackgroundFill(Color.LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY);
 
@@ -179,7 +182,7 @@ public class VueController implements Initializable {
     @FXML
     private void btnConnectClicked(ActionEvent event) {
         alert.setText("");
-
+        //Tester l'adresse ip introduite
         if (Pattern.matches("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", txtIpDistnt.getText())) {
             if (txtPort.getText().matches("\\d+")) {
                 chatManager.connect(txtIpDistnt.getText(), Integer.parseInt(txtPort.getText()));
