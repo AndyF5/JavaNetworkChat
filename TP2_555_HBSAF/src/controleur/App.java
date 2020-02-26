@@ -6,10 +6,12 @@
 package controleur;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -28,6 +30,12 @@ public class App extends Application {
         stage.setScene(scene1);
         
         VueController controller = loader.getController();
+        
+        Platform.setImplicitExit(false);
+        
+        stage.setOnCloseRequest((WindowEvent event) -> {
+        	controller.shutdown();
+        });
         
         stage.setOnHidden(e -> controller.shutdown());
                
