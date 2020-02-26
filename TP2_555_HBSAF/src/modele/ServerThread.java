@@ -31,7 +31,7 @@ public class ServerThread implements Runnable {
     private boolean continuer;
 
     private final int port;
-    
+
     private ServerSocket server;
 
     public ServerThread(Collection<Message> conversation, Collection<String> events, int port, String filepath) {
@@ -50,40 +50,45 @@ public class ServerThread implements Runnable {
     @Override
     public void run() {
         try {
-            
+
             server = new ServerSocket(port);
-            
 
             System.out.println("Server ecoute sur socket " + server);
 
             Platform.runLater(() -> {
                 events.add("Server ecoute sur port " + server.getLocalPort());
             });
-            
+
             Socket socket = server.accept();
-            
+
             while (continuer) {
-                try {
-                    ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-                
-                    Object obj = input.readObject();
-                    
-                    if (obj instanceof Message) {
-                        saveMessage(obj);
-                    } else if (obj instanceof FilePacket) {
-                        saveFile(obj);
-                    } else {
-                        events.add("Object inconnu reçu!");
-                    }
-                } catch (ClassNotFoundException | IOException ex) {
+                if (socket.isClosed()) {
                     Platform.runLater(() -> {
-                        System.out.println(ex.getMessage());
-                        events.add("Erreur avec le reception d'un objet.");
+                        events.add("Connexion terminée avec l'autre machine !");
                     });
+                    break;
+                } else {
+                    try {
+                        ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+
+                        Object obj = input.readObject();
+
+                        if (obj instanceof Message) {
+                            saveMessage(obj);
+                        } else if (obj instanceof FilePacket) {
+                            saveFile(obj);
+                        } else {
+                            events.add("Object inconnu reçu!");
+                        }
+                    } catch (ClassNotFoundException | IOException ex) {
+                        Platform.runLater(() -> {
+                            System.out.println(ex.getMessage());
+                            events.add("Erreur avec le reception d'un objet.");
+                        });
+                    }
                 }
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
             Platform.runLater(() -> {
                 events.add("Erreur en établissant le socket de reception.");
@@ -104,21 +109,19 @@ public class ServerThread implements Runnable {
     private void saveFile(Object obj) {
         try {
             FilePacket fp = (FilePacket) obj;
-            
+
             System.out.println("File " + fp.getFileName() + " received.");
             System.out.println("Saving file : " + filepath + fp.getFileName());
-            File file2=new File(filepath);
+            File file2 = new File(filepath);
             file2.mkdirs();
             File file = new File(filepath + fp.getFileName());
-            
-            
-        
+
             if (!file.exists()) {
                 file.createNewFile();
             }
-            
+
             Files.write(file.toPath(), fp.getContenu());
-            
+
             Platform.runLater(() -> {
                 events.add("Fichier reçu et stocké à : " + file.getPath());
             });
@@ -136,7 +139,7 @@ public class ServerThread implements Runnable {
     public void StopThread() {
         continuer = false;
         try {
-            if (server != null){
+            if (server != null) {
                 server.close();
             }
         } catch (IOException ex) {
