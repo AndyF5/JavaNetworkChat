@@ -8,8 +8,8 @@ package modele;
 
 import java.io.Serializable;
 
-/** Object qui respresent un fichier envoyé par réseau.
- *  Ça utilise un proprieté «type» pour identifier l'objet comme un fichier quand reçu par l'application.
+/** Object qui represent un fichier envoyé par réseau.
+ *  Ça utilise un propriété «type» pour identifier l'objet comme un fichier quand reçu par l'application.
  * 
  * @author 1897654
  */
