@@ -46,7 +46,7 @@ public class FileSender implements Runnable{
                 outFile.writeObject(filePacket);
                 outFile.flush();
                 Platform.runLater(()->{
-                    events.add("Fichier "+ file.getPath()+ " envoyé !");
+                    events.add("Fichier "+ file.getPath()+ " envoyé");
                 });
             }
         } catch (IOException ex) {

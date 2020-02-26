@@ -123,7 +123,7 @@ public class VueController implements Initializable {
         InterfaceInteraction.setBtn_EnvoyerMessage(btnEnvoyerMSG);
         InterfaceInteraction.setBtn_EnvoyerFichier(btnEnvoyerFichier);
 
-        //Methode pour changer la couleur de la ligne du local user lors d'une discution 
+        // Méthode pour changer la couleur de la ligne du local user lors d'une discution 
         listChat.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
             BackgroundFill backgroundUser = new BackgroundFill(Color.LIGHTSTEELBLUE, CornerRadii.EMPTY, Insets.EMPTY);
 
