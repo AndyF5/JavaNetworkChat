@@ -99,4 +99,16 @@ public final class InterfaceInteraction {
         input_Message.setDisable(false);
         input_UserName.setDisable(false);
     }
+    
+    public static void connexionPerdu() {
+    	btn_EnvoyerMessage.setDisable(true);
+        btn_EnvoyerFichier.setDisable(true);
+        btn_Connexion.setDisable(false);
+
+        input_IP.setDisable(false);
+        input_Port.setDisable(false);
+        input_FilePath.setDisable(true);
+        input_Message.setDisable(true);
+        input_UserName.setDisable(true);
+    }
 }
