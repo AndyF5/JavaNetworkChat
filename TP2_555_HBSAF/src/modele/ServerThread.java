@@ -53,8 +53,6 @@ public class ServerThread implements Runnable {
 
             server = new ServerSocket(port);
 
-            System.out.println("Server ecoute sur socket " + server);
-
             Platform.runLater(() -> {
                 events.add("Server ecoute sur port " + server.getLocalPort());
             });
@@ -76,7 +74,6 @@ public class ServerThread implements Runnable {
                     }
                 } catch (ClassNotFoundException ex) {
                     Platform.runLater(() -> {
-                        System.out.println(ex.getMessage());
                         events.add("Erreur avec le reception d'un objet.");
                     });
                 }
@@ -89,7 +86,6 @@ public class ServerThread implements Runnable {
                 }
             }
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
             Platform.runLater(() -> {
                 events.add("Erreur en établissant le socket de reception.");
             });
@@ -102,8 +98,6 @@ public class ServerThread implements Runnable {
      */
     private void saveMessage(Object obj) {
         Message message = (Message) obj;
-
-        System.out.println("Message received : " + message.getMessage());
 
         Platform.runLater(() -> {
             chat.add(message);
@@ -118,8 +112,6 @@ public class ServerThread implements Runnable {
         try {
             FilePacket fp = (FilePacket) obj;
 
-            System.out.println("File " + fp.getFileName() + " received.");
-            System.out.println("Saving file : " + filepath + fp.getFileName());
             File file2 = new File(filepath);
             file2.mkdirs();
             File file = new File(filepath + fp.getFileName());
@@ -131,7 +123,7 @@ public class ServerThread implements Runnable {
             Files.write(file.toPath(), fp.getContenu());
 
             Platform.runLater(() -> {
-                events.add("Fichier reçu et stocké à : " + file.getPath());
+                events.add("Fichier " + file.getName() + " reçu");
             });
         } catch (IOException ex) {
             Platform.runLater(() -> {
@@ -142,7 +134,7 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Arreter le thread.
+     * Arrêter le thread.
      */
     public void StopThread() {
         continuer = false;
