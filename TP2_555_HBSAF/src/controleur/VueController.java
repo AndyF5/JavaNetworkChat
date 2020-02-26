@@ -173,7 +173,7 @@ public class VueController implements Initializable {
     @FXML
     private void txtUrlFichierClicked(MouseEvent event) throws Exception {
         {
-            file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
+            file = fileChooser.showOpenDialog(((Node)(event.getTarget())).getScene().getWindow());
             txtUrlFichier.setText(file.getPath());
             fileName = file.getName();
         }
