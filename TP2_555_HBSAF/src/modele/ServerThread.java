@@ -112,8 +112,8 @@ public class ServerThread implements Runnable {
         try {
             FilePacket fp = (FilePacket) obj;
 
-            File file2 = new File(filepath);
-            file2.mkdirs();
+            File repertoire = new File(filepath);
+            repertoire.mkdirs();
             File file = new File(filepath + fp.getFileName());
 
             if (!file.exists()) {
