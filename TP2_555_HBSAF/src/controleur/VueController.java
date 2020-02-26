@@ -174,8 +174,11 @@ public class VueController implements Initializable {
     private void txtUrlFichierClicked(MouseEvent event) throws Exception {
         {
             file = fileChooser.showOpenDialog(((Node) (event.getTarget())).getScene().getWindow());
-            txtUrlFichier.setText(file.getPath());
-            fileName = file.getName();
+            if (file != null) {
+            	txtUrlFichier.setText(file.getPath());
+                fileName = file.getName();
+            }
+            
         }
     }
 
