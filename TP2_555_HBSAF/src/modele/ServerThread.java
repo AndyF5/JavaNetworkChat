@@ -91,6 +91,10 @@ public class ServerThread implements Runnable {
         }
     }
 
+    /**
+     * Placer un message reçu dans le chat.
+     * @param obj	un objet de type Message reçu sur le réseau
+     */
     private void saveMessage(Object obj) {
         Message message = (Message) obj;
 
@@ -101,6 +105,10 @@ public class ServerThread implements Runnable {
         });
     }
 
+    /**
+     * Sauvegarder un fichier à l'emplacement demandé.
+     * @param obj	un objet de type FilePacket reçu sur le réseau
+     */
     private void saveFile(Object obj) {
         try {
             FilePacket fp = (FilePacket) obj;
