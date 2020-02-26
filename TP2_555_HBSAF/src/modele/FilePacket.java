@@ -14,7 +14,10 @@ import java.io.Serializable;
  * @author 1897654
  */
 public class FilePacket implements Serializable{
-    private String fileName;
+
+	private static final long serialVersionUID = 1L;
+
+	private String fileName;
     
     private byte[] contenu;
 
