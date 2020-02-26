@@ -205,7 +205,6 @@ public class VueController implements Initializable {
 
     public void shutdown() {
         try {
-            System.out.println("Fermeture");
             chatManager.close();
             Platform.exit();
         } catch (IOException ex) {

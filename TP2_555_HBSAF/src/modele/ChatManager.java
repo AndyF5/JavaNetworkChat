@@ -57,6 +57,8 @@ public class ChatManager {
         
         server = new Thread(serverThread);
         
+        server.setDaemon(true);
+        
         server.start();
     }
     

@@ -29,20 +29,9 @@ public class App extends Application {
         stage.setTitle("Logiciel de messagerie et d'envoie de fichier");
         stage.setScene(scene1);
         
-        VueController controller = loader.getController();
-        
-        Platform.setImplicitExit(false);
-        
-        stage.setOnCloseRequest((WindowEvent event) -> {
-        	controller.shutdown();
-        });
-        
-        stage.setOnHidden(e -> controller.shutdown());
-               
         stage.resizableProperty().setValue(Boolean.FALSE);
         
         stage.show();
-
     }
 
     public static void main(String[] args) {
