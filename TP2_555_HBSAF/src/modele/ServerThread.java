@@ -62,30 +62,29 @@ public class ServerThread implements Runnable {
             Socket socket = server.accept();
 
             while (continuer) {
-                if (socket.isClosed()) {
+                try {
+                    ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+
+                    Object obj = input.readObject();
+
+                    if (obj instanceof Message) {
+                        saveMessage(obj);
+                    } else if (obj instanceof FilePacket) {
+                        saveFile(obj);
+                    } else {
+                        events.add("Object inconnu reçu!");
+                    }
+                } catch (ClassNotFoundException ex) {
                     Platform.runLater(() -> {
+                        System.out.println(ex.getMessage());
+                        events.add("Erreur avec le reception d'un objet.");
+                    });
+                }
+                catch (IOException ex) {
+                	Platform.runLater(() -> {
                         events.add("Connexion terminée avec l'autre machine !");
                     });
                     break;
-                } else {
-                    try {
-                        ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-
-                        Object obj = input.readObject();
-
-                        if (obj instanceof Message) {
-                            saveMessage(obj);
-                        } else if (obj instanceof FilePacket) {
-                            saveFile(obj);
-                        } else {
-                            events.add("Object inconnu reçu!");
-                        }
-                    } catch (ClassNotFoundException | IOException ex) {
-                        Platform.runLater(() -> {
-                            System.out.println(ex.getMessage());
-                            events.add("Erreur avec le reception d'un objet.");
-                        });
-                    }
                 }
             }
         } catch (IOException ex) {
